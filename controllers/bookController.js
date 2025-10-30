@@ -1,7 +1,11 @@
 const { books, getAllBooks, getBookByISBN, findByAuthor, findByTitle } = require('../models/bookModel');
 
 // public endpoints
-exports.getBooks = (req, res) => res.json(getAllBooks());
+exports.getBooks = async (req, res) =>{ 
+  try{
+  res.json(getAllBooks());}
+    catch(err){console.error(err)}
+}
 exports.getBookByISBN = (req, res) => {
   const book = getBookByISBN(req.params.isbn);
   if (!book) return res.status(404).json({ error: 'Book not found' });
