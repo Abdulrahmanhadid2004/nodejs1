@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { register, login } = require('../models/userModel');
 const config = require('../config/config');
+const api = require('../config/axiosConfig');
 
 exports.registerUser = async (req, res) => {
   try {
@@ -16,7 +17,10 @@ exports.loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await login(username, password);
-    const token = jwt.sign(user, config.jwtSecret, { expiresIn: '1h' });
+
+    const token = jwt.sign({ username: user.username }, config.jwtSecret, { expiresIn: '1h' });
+
+    // Just return the token to the client
     res.json({ message: 'Login successful', token });
   } catch (err) {
     res.status(400).json({ error: err.message });

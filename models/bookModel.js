@@ -1,5 +1,3 @@
-const { error } = require("console");
-
 let books = {
   "9780143127550": {
     isbn: "9780143127550",
@@ -11,35 +9,58 @@ let books = {
     isbn: "9780062316110",
     title: "The Alchemist",
     author: "Paulo Coelho",
-    reviews: {}
+   reviews: {
+    "reader123": {
+      rating: 5,
+      comment: "Haunting and beautifully written."
+    },
+    "booklover88": {
+      rating: 4,
+      comment: "Bleak but powerful."
+    }
+  }
+
   }
 };
 
 async function getAllBooks() {
-    if(Object.length>0)
-  return Object.values(books);
-else throw new error("there is no books available")
+  if (Object.keys(books).length > 0)
+    return Object.values(books);
+  else
+    throw new Error("There are no books available");
 }
 
-async function getBookByISBN(isbn) {
-    try{
-         
-  return await getAllBooks[isbn];
-}catch(err){console.error(err);
+function getBookByISBN(isbn) {
+  return getAllBooks()
+    .then(allBooks => {
+      return allBooks.find(book => book.isbn === isbn);
+    })
+    .catch(err => {
+      console.error(err);
+      throw err;
+    });
 }
-}
+
 
 
 async function findByAuthor(author) {
   const q = author.toLowerCase();
-  try{
-  return await getAllBooks.values(books).filter(b => b.author.toLowerCase().includes(q));
-}catch(err){console.error(err)}
+  try {
+    const allBooks = await getAllBooks();
+    return allBooks.filter(b => b.author.toLowerCase().includes(q));
+  } catch (err) {
+    console.error(err);
+  }
 }
+
 async function findByTitle(title) {
   const q = title.toLowerCase();
-  try{
-  return await getAllBooks.values(books).filter(b => b.title.toLowerCase().includes(q));
-}catch(err){}}
+  try {
+    const allBooks = await getAllBooks();
+    return allBooks.filter(b => b.title.toLowerCase().includes(q));
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 module.exports = { books, getAllBooks, getBookByISBN, findByAuthor, findByTitle };

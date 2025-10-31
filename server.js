@@ -7,7 +7,8 @@ const bookRoutes = require('./routes/bookRoutes');
 
 const app = express();
 app.use(bodyParser.json());
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // session setup
 app.use(session({
   secret: config.sessionSecret,
